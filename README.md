@@ -1,1 +1,1 @@
-readme details to be updated later
+writting a simple UNIX command interpreter
