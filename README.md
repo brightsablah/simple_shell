@@ -1,1 +1,1 @@
-writting a simple UNIX command interpreter
+writing a simple UNIX command interpreter
