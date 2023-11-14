@@ -1,6 +1,5 @@
 #include "shell.h"
 
-#define MAX_ARGS 100
 
 void handlePipedCommands(const char *command) {
     // Remove leading and trailing spaces
