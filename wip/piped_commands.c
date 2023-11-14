@@ -1,27 +1,25 @@
 #include "shell.h"
 
-
 void handlePipedCommands(const char *command) {
     char *extracted_command = NULL, *cleaned_command;
     size_t command_len = 0;
     int command_start = 0;
     int command_end = -1, i;
 
-    // Find the first '/' occurrence
-    for (i = 0; command[i] != '\0'; i++) {
+    // Find the first non-space character
+    while (command[command_start] == ' ') {
+        command_start++;
+    }
+
+    // Find the end of the command (space or end of string)
+    for (i = command_start; command[i] != '\0' && command[i] != ' '; i++) {
         if (command[i] == '/') {
             command_start = i;
             break;
         }
     }
 
-    // Find the end of the command
-    for (; command[i] != '\0'; i++) {
-        if (command[i] == '"') {
-            command_end = i;
-            break;
-        }
-    }
+    command_end = i;
 
     if (command_end != -1) {
         command_len = command_end - command_start;
@@ -43,4 +41,3 @@ void handlePipedCommands(const char *command) {
         free(extracted_command);
     }
 }
-
