@@ -8,7 +8,7 @@ void trim_trailing_spaces(char *str) {
         i--;
     }
 
-    printf("command_string after removing trailing space = %s", str);
+   // printf("command_string after removing trailing space = %s", str);
 }
 
 
