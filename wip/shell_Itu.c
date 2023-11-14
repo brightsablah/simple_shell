@@ -1,5 +1,15 @@
 #include "shell.h"
 
+// Function to remove trailing spaces from a string
+void trim_trailing_spaces(char *str) {
+    int i = strlen(str) - 1;
+    while (i >= 0 && (str[i] == ' ' || str[i] == '\t')) {
+        str[i] = '\0';
+        i--;
+    }
+}
+
+
 /**
  * print_prompt - Prints the shell prompt
  *
@@ -50,7 +60,9 @@ int main(int argc, char *argv[]) {
                 if (command_string[readline - 1] == '\n') {
                     command_string[readline - 1] = '\0';
                 }
-
+// Trim trailing spaces before processing the command
+            trim_trailing_spaces(command_string);
+                
                 if (_strcmp(command_string, "exit") == 0) {
                     exit_shell(command_string);
                     break;
