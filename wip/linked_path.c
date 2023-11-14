@@ -37,9 +37,9 @@ list_t *linked_path(const char *name)
  * @command: The command to search for
  * @arguments: Arguments for the command
  *
- * Return: None
+ * Return: 1 for success, 0 for failure
  */
-void find_command_in_path(char *command, char **arguments) {
+int find_command_in_path(char *command, char **arguments) {
     list_t *path_directories = linked_path("PATH");
     list_t *current_directory = path_directories;
 
@@ -49,7 +49,7 @@ void find_command_in_path(char *command, char **arguments) {
         if (full_path != NULL && access(full_path, X_OK) == 0) {
             execute_absolute_path(full_path, arguments);
             free(full_path);
-            return;
+            return (1);
         }
 
         free(full_path);
@@ -58,6 +58,7 @@ void find_command_in_path(char *command, char **arguments) {
 
     /* Free memory at the end */
     free_list(path_directories);
+	return (0);
 }
 
 /**
