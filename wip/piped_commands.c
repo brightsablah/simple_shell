@@ -4,7 +4,7 @@
 void handlePipedCommands(const char *command) {
     char *extracted_command = NULL, *cleaned_command;
     size_t command_len = 0;
-    int command_start = 0;  // Start from the beginning of the command
+    int command_start = 0;
     int command_end = -1, i;
 
     // Find the first '/' occurrence
@@ -14,7 +14,7 @@ void handlePipedCommands(const char *command) {
             break;
         }
     }
-    
+
     // Find the end of the command
     for (; command[i] != '\0'; i++) {
         if (command[i] == '"') {
