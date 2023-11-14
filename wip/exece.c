@@ -56,7 +56,11 @@ void execute_command(char *command_string) {
     }
 
     /* If not an absolute path or known command, search in the directories specified in the PATH */
-    find_command_in_path(command, arguments);
+    if (!find_command_in_path(command, arguments) && !is_executable(command))
+    {
+       /* if control reaches here, the command was not found */
+           fprintf(stderr, "%s: command not found\n", command);
+    }
 }
 
 /**
