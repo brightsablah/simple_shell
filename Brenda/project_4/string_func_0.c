@@ -73,7 +73,7 @@ char *_strcpy(char *dest, char *src)
  * _strdup - Duplicates a string
  * @str: The string to duplicate
  *
- * Return: A pointer to the duplicated string, NULL if allocation fails or str is NULL
+ * Return: pointer to duplicated string,otherwise return NULL
  */
 char *_strdup(const char *str)
 {

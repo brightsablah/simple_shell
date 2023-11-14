@@ -1,62 +1,58 @@
 #include "shell.h"
 
 /**
- * execute_command - Executes the provided command
- * @command_string: String containing the command to execute
+ * execute_command - carry out execution of given command
+ * @command_string: command string to execute
  */
-void execute_command(char *command_string) {
+void execute_command(char *command_string)
+{
+    char *command, *arguments[MAX_ARGS];
+    int token_count = 0, i = 0;
 
-       char *command, **arguments;
-    char *tokens[MAX_ARGS];
-    int token_count = 0;
-    int i = 0;
-
-    /* Tokenizing the command string based on spaces */
     while (command_string[i] != '\0' && token_count < MAX_ARGS) {
         while (command_string[i] == ' ') {
-                /* Skip over multiple spaces until a non-space character is found */
             i++;
         }
 
         if (command_string[i] == '\0') {
-                /* Handle empty command (only spaces) */
-        return;
-    }
-            tokens[token_count] = &command_string[i];
-        
+            break;
+        }
+
+        arguments[token_count] = &command_string[i];
+        token_count++;
+
         while (command_string[i] != ' ' && command_string[i] != '\0') {
             i++;
         }
+
         if (command_string[i - 1] == '\n') {
             command_string[i - 1] = '\0';
         } else {
             command_string[i] = '\0';
         }
-        token_count++;
+
+        if (token_count == 1) {
+            command = arguments[0];
+        }
+
         i++;
     }
 
-    tokens[token_count] = NULL;
+    arguments[token_count] = NULL;
 
     if (token_count == 0) {
-        return; /* If no tokens were found, just return without an error message */
+        return;
     }
-
-    command = tokens[0];
-    arguments = tokens;
-
-    if (handle_builtin(command)) {
-        return; /* If it's a built-in command, return without forking */
-    }
-
-    /* Check if it's an absolute path or in the current directory */
-    if (command[0] == '/' || command[0] == '.') {
-        execute_absolute_path(command, arguments);
+ 
+    if (handle_builtin(command, arguments)) {
         return;
     }
 
-    /* If not an absolute path or known command, search in the directories specified in the PATH */
-    find_command_in_path(command, arguments);
+    if (command[0] == '/' || command[0] == '.') {
+        execute_absolute_path(command, arguments);
+    } else {
+        find_command_in_path(command, arguments);
+    }
 }
 
 /**
@@ -66,20 +62,24 @@ void execute_command(char *command_string) {
  */
 void execute_absolute_path(char *command, char **arguments)
 {
-    if (access(command, X_OK) == 0) {
-        pid_t child_pid = fork();
-        if (child_pid == -1) {
-            return;
-        }
+	pid_t child_pid;
 
-        if (child_pid == 0) {
+	if (access(command, X_OK) == 0)
+	{
+		child_pid = fork();
 
-            if (execve(command, arguments, environ) == -1) {
-                exit(1);
-            }
-        } else {
-            wait(NULL);
-            return;
-        }
-    }
+		if (child_pid == -1)
+			return;
+
+		if (child_pid == 0)
+		{
+			if (execve(command, arguments, environ) == -1)
+				exit(1);
+		}
+		else
+		{
+			wait(NULL);
+		}
+		return;
+	}
 }

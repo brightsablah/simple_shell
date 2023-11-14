@@ -1,19 +1,82 @@
 #include "shell.h"
 
 /**
- * handle_builtin - Handle built-in commands such as echo and env
- * @command: The command to be checked if it's a built-in command
- * @arguments: Arguments passed with the command
- *
- * Return: 1 if it's a built-in command, 0 otherwise
+ * print_environment - Print environment variables
  */
-int handle_builtin(char *command)
+void print_environment(void)
+{
+    extern char **environ;
+    int len = 0;
+
+    while (environ[len] != NULL)
+    {
+        write(STDOUT_FILENO, environ[len], _strlen(environ[len]));
+        write(STDOUT_FILENO, "\n", 1);
+        len++;
+    }
+}
+
+void exit_shell(char **arguments)
+{
+    int status = 0;
+
+    if (arguments[1] != NULL)
+    {
+        status = _atoi(arguments[1]);
+    }
+
+    exit(status);
+}
+
+/**
+ * change_directory - Change the current working directory
+ * @arguments: Arguments for the cd command
+ */
+void change_directory(char **arguments)
+{
+	const char *home_directory = _getenv("HOME");
+    if (arguments[1] == NULL)
+    {
+	    if (home_directory == NULL)
+		    return;
+
+	    if (chdir(home_directory) == -1)
+		    perror("cd");
+    }
+    else
+    {
+        if (strcmp(arguments[1], "/") == 0)
+        {
+		if (chdir("/") == -1)
+		    perror("cd");
+        }
+        else
+        {
+            if (chdir(arguments[1]) == -1)
+            {
+                perror("cd");
+            }
+        }
+    }
+}
+
+int handle_builtin(char *command, char **arguments)
 {
     if (_strcmp(command, "env") == 0)
     {
         print_environment();
-        return (1); /* Return 1 to indicate that it's a built-in command */
+        return 1;
+    }
+    else if (_strcmp(command, "exit") == 0)
+    {
+        exit_shell(arguments);
+        return 1;
+    }
+    else if (_strcmp(command, "cd") == 0)
+    {
+        change_directory(arguments);
+        return 1;
     }
 
-    return (0); /* Return 0 for non-built-in commands */
+    return 0;
 }

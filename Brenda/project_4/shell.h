@@ -2,6 +2,7 @@
 #define SHELL_H
 
 #define MAX_ARGS 1024
+#define BUFSIZ 1024
 #include <stdio.h> /* for printf*/
 #include <unistd.h> /* for fork, execve*/
 #include <stdlib.h>
@@ -19,33 +20,37 @@
 extern char **environ;
 
 /* Structure for the linked list */
-typedef struct list_s {
-    char *str;
-    unsigned int len;
-    struct list_s *next;
+typedef struct list_s
+{
+	char *str;
+	unsigned int len;
+	struct list_s *next;
 } list_t;
 
+void executePipedCommands(void);
 int wordcount(char *s, char *delimiter);
 char **strtow(char *str, char *delimiter);
-
+int _atoi(char *s);
+void change_directory(char **arguments);
+void exit_shell(char **arguments);
+char *_memcpy(char *dest, char *src, unsigned int n);
 void handlePipedCommands(const char *command);
 void execute_command(char *command_string);
-int handle_builtin(char *command);
+int handle_builtin(char *command, char **arguments);
 void execute_absolute_path(char *command, char **arguments);
 
 char *remove_extra_spaces(const char *input);
-int is_whitespace(const char *str);
+int is_whitespace(const char ch);
 void free_list(list_t *head);
 list_t *add_node(list_t **head, const char *str);
-list_t *linked_path(const char *name);
+list_t *linked_path(char *name);
 void find_command_in_path(char *command, char **arguments);
-char *construct_path(const char *directory, const char *command);
+char *construct_path(char *directory, char *command);
 int is_executable(const char *path);
 void nonInteractiveMode(FILE *script);
 void print_path_directories(const char *path);
-void print_environment();
-void print_prompt();
-void exit_shell(char *command_string);
+void print_environment(void);
+void print_prompt(void);
 char *_getenv(const char *name);
 
 char *_strdup(const char *str);
