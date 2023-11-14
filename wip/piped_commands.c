@@ -7,6 +7,14 @@ void handlePipedCommands(const char *command) {
     int command_start = 0;  // Start from the beginning of the command
     int command_end = -1, i;
 
+    // Find the first '/' occurrence
+    for (i = 0; command[i] != '\0'; i++) {
+        if (command[i] == '/') {
+            command_start = i;
+            break;
+        }
+    }
+    
     // Find the end of the command
     for (i = 0; command[i] != '\0'; i++) {
         if (command[i] == '"') {
