@@ -16,7 +16,7 @@ void handlePipedCommands(const char *command) {
     }
     
     // Find the end of the command
-    for (i = 0; command[i] != '\0'; i++) {
+    for (; command[i] != '\0'; i++) {
         if (command[i] == '"') {
             command_end = i;
             break;
