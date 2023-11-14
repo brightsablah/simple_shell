@@ -84,6 +84,12 @@ void nonInteractiveMode(FILE *script) {
         if (is_whitespace(line)) {
             return; /* Skip execution for empty or whitespace-only lines */
         }
+	    
+// Remove leading spaces before processing the command
+        while (*line == ' ' || *line == '\t') {
+            line++;
+        }
+	    
         if (line[0] == '"') {
             handlePipedCommands(line);
         } else {
