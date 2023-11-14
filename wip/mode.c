@@ -33,9 +33,10 @@ int is_whitespace(const char *str) {
 
 char* remove_extra_spaces(const char* line)
 {
-	int i, j;
-	int space_flag;
-	char* cleaned_line;
+    int i, j;
+    int space_flag = 0; // Flag to handle multiple spaces
+    char* cleaned_line;
+
     if (line == NULL || *line == '\0') {
         return NULL;
     }
@@ -44,8 +45,6 @@ char* remove_extra_spaces(const char* line)
     if (cleaned_line == NULL) {
         return NULL;
     }
-
-    space_flag = 0; /* Flag to handle multiple spaces */
 
     for (i = 0, j = 0; line[i] != '\0'; i++) {
         if (line[i] != ' ') {
@@ -59,9 +58,15 @@ char* remove_extra_spaces(const char* line)
         }
     }
 
+    // Remove trailing spaces
+    while (j > 0 && cleaned_line[j - 1] == ' ') {
+        j--;
+    }
+
     cleaned_line[j] = '\0';
     return cleaned_line;
 }
+
 
 
 /**
