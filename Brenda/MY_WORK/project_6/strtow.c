@@ -40,86 +40,77 @@ int wordcount(char *s, char *delimiter)
  */
 char **strtow(char *str, char *delimiter)
 {
-	int i, j, k, l, count, m, in_word = 0;
-	char **word;
+    int i, j, k, l, count, m, in_word = 0;
+    char **word;
 
-	if (str == NULL || *str == '\0')
-		return (NULL);
+    if (str == NULL || *str == '\0')
+        return NULL;
 
-	count = wordcount(str, delimiter);
-	if (count == 1)
-		return (NULL);
+    count = wordcount(str, delimiter);
+    if (count <= 0) 
+        return NULL;
 
-	word = malloc(count * sizeof(char *));
+    word = malloc(count * sizeof(char *));
+    if (word == NULL)
+        return NULL;
 
-	if (word == NULL)
-		return (NULL);
+    word[count - 1] = NULL;
+    m = 0;
 
-	word[count - 1] = NULL;
-	m = 0;
+    for (i = 0; str[i]; i++)
+    {
+        if (_strchr(delimiter, str[i]))
+        {
+            if (in_word)
+            {
+                for (j = 1; str[i + j] != '\0' && !_strchr(delimiter, str[i + j]); j++)
+                    ;
+                word[m] = malloc((j + 1) * sizeof(char));
+                if (word[m] == NULL)
+                {
+                    for (k = 0; k < m; k++)
+                    {
+                        free(word[k]);
+                    }
+                    free(word);
+                    return NULL;
+                }
+                for (l = 0; l < j; l++)
+                {
+                    word[m][l] = str[i + l];
+                }
+                word[m][l] = '\0';
+                m++;
+                i += j - 1;
+            }
+            in_word = 0;
+        }
+        else
+        {
+            in_word = 1;
+        }
+    }
 
-	for (i = 0; str[i]; i++)
-	{
-		if (_strchr(delimiter, str[i]))
-		{
-			if (in_word)
-			{
-				for (j = 1; str[i + j] != '\0' && !_strchr(delimiter, str[i + j]); j++)
-					;
-				j++;
-				word[m] = malloc(j * sizeof(char));
-				j--;
+    if (in_word)
+    {
+        j = strlen(&str[i]); 
+        word[m] = malloc((j + 1) * sizeof(char));
+        if (word[m] == NULL)
+        {
+            for (k = 0; k < m; k++)
+            {
+                free(word[k]);
+            }
+            free(word);
+            return NULL;
+        }
+        for (l = 0; l < j; l++)
+        {
+            word[m][l] = str[i + l];
+        }
+        word[m][l] = '\0';
+        m++;
+    }
 
-				if (word[m] == NULL)
-				{
-					for (k = 0; k < m; k++)
-					{
-						free(word[k]);
-					}
-
-					free(word[count - 1]);
-					free(word);
-
-					return (NULL);
-				}
-				for (l = 0; l < j; l++)
-				{
-					word[m][l] = str[i + l];
-				}
-				word[m][l] = '\0';
-				m++;
-				i += j;
-			}
-		} else {
-			in_word = 1;
-		}
-	}
-	if (in_word)
-	{
-		for (j = 1; str[i + j] != '\0'; j++)
-			;
-		j++;
-		word[m] = malloc(j * sizeof(char));
-		j--;
-
-		if (word[m] == NULL)
-		{
-			for (k = 0; k < m; k++)
-			{
-				free(word[k]);
-			}
-
-			free(word[count - 1]);
-			free(word);
-			return (NULL);
-		}
-		for (l = 0; l < j; l++)
-		{
-			word[m][l] = str[i + l];
-		}
-
-		word[m][l] = '\0';
-		m++;
-	}
-	return (word);
+    return word;
 }

@@ -3,16 +3,16 @@
 
 #define MAX_ARGS 1024
 #define BUFSIZ 1024
-#include <stdio.h> /* for printf*/
-#include <unistd.h> /* for fork, execve*/
+
+#include <stdio.h>
 #include <stdlib.h>
 #include <stddef.h>
-#include <errno.h> /* for errno and perror */
-#include <sys/types.h> /* for type pid */
-#include <sys/wait.h> /* for wait */
-#include <sys/stat.h> /* for use of stat function */
-#include <signal.h> /* for signal management */
-#include <fcntl.h> /* for open files*/
+#include <errno.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <sys/stat.h>
+#include <signal.h>
+#include <fcntl.h>
 #include <unistd.h>
 #include <limits.h>
 #include <string.h>
@@ -22,11 +22,10 @@ extern char **environ;
 /* Structure for the linked list */
 typedef struct list_s
 {
-	char *str;
-	unsigned int len;
-	struct list_s *next;
+    char *str;
+    unsigned int len;
+    struct list_s *next;
 } list_t;
-
 
 int execute_external_command(char *command, char **arguments);
 void print_error(const char *program_name, const char *message);
