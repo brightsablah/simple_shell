@@ -104,7 +104,7 @@ void execute_non_interactive(FILE *script) {
                 cleaned_line = remove_extra_spaces(line);
                 if (cleaned_line != NULL) {
                     execute_cleaned_line(cleaned_line);
-                    free(cleaned_line);
+                   // free(cleaned_line);
                 }
             }
         }
