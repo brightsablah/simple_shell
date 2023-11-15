@@ -173,8 +173,13 @@ void find_and_execute_command_in_path(char *command, char **arguments) {
     list_t *current_directory = path_directories;
 
     if (arguments == NULL) {
-        /* Handle the case where arguments is not provided */
-        arguments = (char *[]){command, NULL};
+        arguments = (char **)malloc(2 * sizeof(char *));
+        if (arguments == NULL) {
+            perror("Memory allocation failed");
+            exit(EXIT_FAILURE);
+        }
+        arguments[0] = command;
+        arguments[1] = NULL;
     }
 
     while (current_directory != NULL) {
@@ -545,12 +550,12 @@ void execute_absolute_path(char *command, char **arguments)
         } else {
           int status;
           waitpid(child_pid, &status, 0);
-
+/*
           if (WIFEXITED(status)) {
               int exit_status = WEXITSTATUS(status);
-              /* You can use 'exit_status' as needed */
+               You can use 'exit_status' as needed 
           }
-          
+  */        
         }
     }
 }
