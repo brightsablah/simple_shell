@@ -585,6 +585,7 @@ char *_getenv(const char *name)
                 strcpy(value, env_var);
                 return value;
             } else {
+                free(value);
                 return NULL; /* Handle memory allocation failure */
             }
         }
