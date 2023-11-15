@@ -25,7 +25,7 @@ typedef struct list_s {
     struct list_s *next;
 } list_t;
 
-//added by bright
+/* new functions */
 void trim_trailing_spaces(char *str);
 int find_command_in_path(char *command, char **arguments);
 void *safe_malloc(size_t size);
@@ -49,7 +49,7 @@ int is_whitespace(const char *str);
 void free_list(list_t *head);
 list_t *add_node(list_t **head, const char *str);
 list_t *linked_path(const char *name);
-//void find_command_in_path(char *command, char **arguments);
+/*void find_command_in_path(char *command, char **arguments); */
 char *construct_path(const char *directory, const char *command);
 int is_executable(const char *path);
 void nonInteractiveMode(FILE *script);
