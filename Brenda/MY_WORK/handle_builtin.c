@@ -60,22 +60,22 @@ void change_directory(char **arguments)
     }
 }
 
-int handle_builtin(char *command, char **arguments)
+int handle_builtin(char *command, char **arguments, char *command_string)
 {
     if (_strcmp(command, "env") == 0)
     {
         print_environment();
-        return 1;
+        free(command_string);
     }
     else if (_strcmp(command, "exit") == 0)
     {
         exit_shell(arguments);
-        return 1;
+        free(command_string);
     }
     else if (_strcmp(command, "cd") == 0)
     {
         change_directory(arguments);
-        return 1;
+        free(command_string);
     }
 
     return 0;

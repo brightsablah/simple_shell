@@ -9,7 +9,7 @@ void execute_command(char *command_string)
     char *command, *arguments[MAX_ARGS];
     int token_count = 0, i = 0;
     int should_exit = 0;
-    int exit_status = 0; 
+    int exit_status = 0;
 
     while (command_string[i] != '\0' && token_count < MAX_ARGS) {
         while (command_string[i] == ' ') {
@@ -58,12 +58,8 @@ void execute_command(char *command_string)
         exit(exit_status);
     }
 
-    if (handle_builtin(command, arguments)) {
+    if (handle_builtin(command, arguments, command_string)) {
         return;
-    }
-
-    if (isatty(STDIN_FILENO)) {
-        print_prompt();
     }
 
     if (command[0] == '/' || command[0] == '.')

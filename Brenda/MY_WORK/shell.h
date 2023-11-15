@@ -38,7 +38,7 @@ void exit_shell(char **arguments);
 char *_memcpy(char *dest, char *src, unsigned int n);
 void handlePipedCommands(const char *command);
 void execute_command(char *command_string);
-int handle_builtin(char *command, char **arguments);
+int handle_builtin(char *command, char **arguments, char *command_string);
 int execute_absolute_path(char *command, char **arguments);
 
 char *remove_extra_spaces(const char *input);

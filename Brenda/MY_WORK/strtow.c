@@ -40,7 +40,10 @@ int wordcount(char *s, char *delimiter)
  */
 char **strtow(char *str, char *delimiter)
 {
-    int i, j, k, l, count, m, in_word = 0;
+	int i, j, m, k;
+    int in_word = 0;
+    int count = 0;
+    
     char **word;
 
     if (str == NULL || *str == '\0')
@@ -65,21 +68,18 @@ char **strtow(char *str, char *delimiter)
             {
                 for (j = 1; str[i + j] != '\0' && !_strchr(delimiter, str[i + j]); j++)
                     ;
-                word[m] = malloc((j + 1) * sizeof(char));
+
+                
+                word[m] = _strdup(&str[i]);
                 if (word[m] == NULL)
                 {
+                  
                     for (k = 0; k < m; k++)
-                    {
                         free(word[k]);
-                    }
                     free(word);
                     return NULL;
                 }
-                for (l = 0; l < j; l++)
-                {
-                    word[m][l] = str[i + l];
-                }
-                word[m][l] = '\0';
+
                 m++;
                 i += j - 1;
             }
@@ -93,22 +93,16 @@ char **strtow(char *str, char *delimiter)
 
     if (in_word)
     {
-        j = strlen(&str[i]); 
-        word[m] = malloc((j + 1) * sizeof(char));
+        word[m] = _strdup(&str[i]);
         if (word[m] == NULL)
         {
+            
             for (k = 0; k < m; k++)
-            {
                 free(word[k]);
-            }
             free(word);
             return NULL;
         }
-        for (l = 0; l < j; l++)
-        {
-            word[m][l] = str[i + l];
-        }
-        word[m][l] = '\0';
+
         m++;
     }
 

@@ -51,8 +51,7 @@ int main(int argc, char *argv[])
 		if (isatty(STDIN_FILENO)) {
                 print_prompt();
             }
-          
-            readline = getline(&command_string, &com_len, stdin);
+                      readline = getline(&command_string, &com_len, stdin);
             if (readline == -1)
             {
                 exit_shell(NULL);
