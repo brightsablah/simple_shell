@@ -11,7 +11,7 @@ void exit_shell(char *command_string) {
     }
 }
 
-// Function to remove trailing spaces from a string
+/* Function to remove trailing spaces from a string */
 void trim_trailing_spaces(char *str) {
     int i = strlen(str) - 1;
     while (i >= 0 && (str[i] == ' ' || str[i] == '\t')) {
@@ -19,7 +19,7 @@ void trim_trailing_spaces(char *str) {
         i--;
     }
 
-   // printf("command_string after removing trailing space = %s", str);
+   /* printf("command_string after removing trailing space = %s", str); */
 }
 
 int main(int argc, char *argv[]) {
@@ -44,7 +44,7 @@ int main(int argc, char *argv[]) {
                     command_string[readline - 1] = '\0';
                 }
 
-              // Trim trailing spaces before processing the command
+              /* Trim trailing spaces before processing the command */
               trim_trailing_spaces(command_string);
               
                 if (_strcmp(command_string, "exit") == 0) {
@@ -73,7 +73,7 @@ int main(int argc, char *argv[]) {
           if (!isatty(STDIN_FILENO)) {
               execute_non_interactive(stdin);
           } else {
-              // No script file provided and no piped data
+              /* No script file provided and no piped data */
               fprintf(stderr, "Usage: %s <script_file>\n", argv[0]);
               return EXIT_FAILURE;
           }
@@ -104,7 +104,7 @@ void execute_non_interactive(FILE *script) {
                 cleaned_line = remove_extra_spaces(line);
                 if (cleaned_line != NULL) {
                     execute_cleaned_line(cleaned_line);
-                   // free(cleaned_line);
+                    /* free(cleaned_line); already freed in execute_cleaned line function */
                 }
             }
         }
@@ -130,7 +130,7 @@ void execute_cleaned_line(char *cleaned_line) {
             }
         }
     }
-   // Free memory allocated for cleaned_line
+   /* Free memory allocated for cleaned_line */
    free(cleaned_line);
 }
 
@@ -173,8 +173,13 @@ void find_and_execute_command_in_path(char *command, char **arguments) {
     list_t *current_directory = path_directories;
 
     if (arguments == NULL) {
-        // Handle the case where arguments is not provided
-        arguments = (char *[]){command, NULL};
+        arguments = (char **)malloc(2 * sizeof(char *));
+        if (arguments == NULL) {
+            perror("Memory allocation failed");
+            exit(EXIT_FAILURE);
+        }
+        arguments[0] = command;
+        arguments[1] = NULL;
     }
 
     while (current_directory != NULL) {
@@ -379,7 +384,7 @@ list_t *linked_path(const char *name)
 
     add_node(&head, directory); /* Add the last directory */
 
-  // Restore the original value of the modified string
+  /* Restore the original value of the modified string */
   *current_char = '=';
 
     return head;
@@ -519,12 +524,12 @@ void execute_command(char *command_string) {
         return;
     }
 
-    /* If not an absolute path or known command, search in the directories specified in the PATH */
-  //  find_command_in_path(command, arguments);
+    /* If not an absolute path or known command, search in the directories specified in the PATH 
+    find_command_in_path(command, arguments); */
 
   /* If not an absolute path or known command, search in the directories specified in the PATH */
   if (!find_command_in_path(command, arguments) && !is_executable(command)) {
-  // If control reaches here, the command was not found
+  /* If control reaches here, the command was not found */
   fprintf(stderr, "%s: command not found\n", command);
   }
 }
@@ -545,12 +550,12 @@ void execute_absolute_path(char *command, char **arguments)
         } else {
           int status;
           waitpid(child_pid, &status, 0);
-
+/*
           if (WIFEXITED(status)) {
               int exit_status = WEXITSTATUS(status);
-              // You can use 'exit_status' as needed
+               You can use 'exit_status' as needed 
           }
-          
+  */        
         }
     }
 }
@@ -908,7 +913,6 @@ void *safe_realloc(void *ptr, size_t size) {
     return new_ptr;
 }
 
-// Function to free the list nodes and strings
 void free_list_and_strings(list_t *head) {
     while (head != NULL) {
         list_t *temp = head;
