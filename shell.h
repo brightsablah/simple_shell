@@ -19,12 +19,19 @@
 
 extern char **environ;
 
-/* Structure for the linked list */
+/**
+ * struct list_s - singly linked list
+ * @str: string data in the node
+ * @len: length of the string
+ * @next: points to the next node in the list
+ *
+ * Description: A structure for creating singly linked lists.
+ */
 typedef struct list_s
 {
-    char *str;
-    unsigned int len;
-    struct list_s *next;
+	char *str;
+	unsigned int len;
+	struct list_s *next;
 } list_t;
 
 int execute_external_command(char *command, char **arguments);
