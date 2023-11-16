@@ -387,6 +387,7 @@ list_t *linked_path(const char *name)
   /* Restore the original value of the modified string */
   *current_char = '=';
 
+    free(path);
     return head;
 }
 
