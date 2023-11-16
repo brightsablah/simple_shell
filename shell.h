@@ -36,14 +36,11 @@ typedef struct list_s
 
 int execute_external_command(char *command, char **arguments);
 void print_error(const char *program_name, const char *message);
-void executePipedCommands(const char *program_name);
 int wordcount(char *s, char *delimiter);
 char **strtow(char *str, char *delimiter);
 int _atoi(char *s);
 void change_directory(char **arguments);
 void exit_shell(char **arguments);
-char *_memcpy(char *dest, char *src, unsigned int n);
-void handlePipedCommands(const char *command);
 void execute_command(char *command_string);
 int handle_builtin(char *command, char **arguments, char *command_string);
 int execute_absolute_path(char *command, char **arguments);
