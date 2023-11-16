@@ -2,26 +2,24 @@
 
 void print_prompt() {
     char prompt[] = "$ ";
-    write(STDOUT_FILENO, prompt, _strlen(prompt));
+    write(STDOUT_FILENO, prompt, sizeof(prompt));
 }
 
 void exit_shell(char *command_string) {
     if (_strcmp(command_string, "exit") == 0) {
-        exit(0);  /* No exit status provided, exit with status 0 */
-    } else if (_strncmp(command_string, "exit ", 5) == 0) {
-        /* Extract the status argument */
-        int status = atoi(command_string + 5);
-        exit(status);
+        exit(0);
     }
 }
 
 /* Function to remove trailing spaces from a string */
 void trim_trailing_spaces(char *str) {
-    int i = _strlen(str) - 1;
+    int i = strlen(str) - 1;
     while (i >= 0 && (str[i] == ' ' || str[i] == '\t')) {
         str[i] = '\0';
         i--;
     }
+
+   /* printf("command_string after removing trailing space = %s", str); */
 }
 
 int main(int argc, char *argv[]) {
@@ -48,14 +46,11 @@ int main(int argc, char *argv[]) {
 
               /* Trim trailing spaces before processing the command */
               trim_trailing_spaces(command_string);
-
-                if (_strncmp(command_string, "exit", 4) == 0) {
+              
+                if (_strcmp(command_string, "exit") == 0) {
                     exit_shell(command_string);
                     break;
-              } else if (_strcmp(command_string, "env") == 0) {
-                    print_environment();
-                }
-                else {
+                } else {
                     execute_command(command_string);
                 }
             }
@@ -67,7 +62,7 @@ int main(int argc, char *argv[]) {
         if (argc > 1) {
             FILE *script = fopen(argv[1], "r");
             if (script != NULL) {
-              execute_non_interactive(script, argv);
+              execute_non_interactive(script);
                 fclose(script);
             } else {
               perror("Error opening script file");
@@ -76,13 +71,11 @@ int main(int argc, char *argv[]) {
         } else {
             /* Check if data is being piped in */
           if (!isatty(STDIN_FILENO)) {
-              execute_non_interactive(stdin, argv);
+              execute_non_interactive(stdin);
           } else {
               /* No script file provided and no piped data */
-            write(STDOUT_FILENO, "Usage: ", 7);
-            write(STDOUT_FILENO, argv[0], _strlen(argv[0]));
-            write(STDOUT_FILENO, " <script_file>\n", 15);
-            return EXIT_FAILURE;
+              fprintf(stderr, "Usage: %s <script_file>\n", argv[0]);
+              return EXIT_FAILURE;
           }
         }
     }
@@ -90,7 +83,7 @@ int main(int argc, char *argv[]) {
     return 0;
 }
 
-void execute_non_interactive(FILE *script, char **argv) {
+void execute_non_interactive(FILE *script) {
     char *line = NULL, *cleaned_line;
     size_t len = 0;
     ssize_t read;
@@ -110,7 +103,7 @@ void execute_non_interactive(FILE *script, char **argv) {
 
                 cleaned_line = remove_extra_spaces(line);
                 if (cleaned_line != NULL) {
-                    execute_cleaned_line(cleaned_line, argv);
+                    execute_cleaned_line(cleaned_line);
                     /* free(cleaned_line); already freed in execute_cleaned line function */
                 }
             }
@@ -120,7 +113,7 @@ void execute_non_interactive(FILE *script, char **argv) {
     free(line);
 }
 
-void execute_cleaned_line(char *cleaned_line, char **argv) {
+void execute_cleaned_line(char *cleaned_line) {
     char *command, **arguments;
     char *tokens[MAX_ARGS];
     int token_count = tokenize_line(cleaned_line, tokens);
@@ -133,7 +126,7 @@ void execute_cleaned_line(char *cleaned_line, char **argv) {
             if (command[0] == '/' || command[0] == '.') {
                 execute_absolute_path(command, arguments);
             } else {
-                find_and_execute_command_in_path(command, arguments, argv);
+                find_and_execute_command_in_path(command, arguments);
             }
         }
     }
@@ -175,10 +168,9 @@ int tokenize_line(char *line, char *tokens[]) {
     return token_count;
 }
 
-void find_and_execute_command_in_path(char *command, char **arguments, char **argv) {
+void find_and_execute_command_in_path(char *command, char **arguments) {
     list_t *path_directories = linked_path("PATH");
     list_t *current_directory = path_directories;
-  int command_found;
 
     if (arguments == NULL) {
         arguments = (char **)malloc(2 * sizeof(char *));
@@ -190,30 +182,18 @@ void find_and_execute_command_in_path(char *command, char **arguments, char **ar
         arguments[1] = NULL;
     }
 
-  command_found = 0;  /* Flag to check if the command is found */
-
     while (current_directory != NULL) {
         char *full_path = construct_path(current_directory->str, command);
 
         if (full_path != NULL && access(full_path, X_OK) == 0) {
             execute_absolute_path(full_path, arguments);
             free(full_path);
-            command_found = 1;
             break;
         }
 
         free(full_path);
         current_directory = current_directory->next;
     }
-  
-  /* Check if the command was not found in any directory */
-  if (!command_found) {
-    /* Print the program name and error message to stderr */
-    write(2, argv[0], _strlen(argv[0]));
-    write(2, ": 1: ", 5);
-    write(2, command, _strlen(command));  /* Write command name */
-    write(2, ": not found\n", 12);  /* Write error message */
-  }
 
     /* Free memory at the end */
     free_list_and_strings(path_directories);
@@ -495,7 +475,7 @@ int handle_builtin(char *command)
 
 void execute_command(char *command_string) {
 
-    char *command, **arguments;
+       char *command, **arguments;
     char *tokens[MAX_ARGS];
     int token_count = 0;
     int i = 0;
@@ -534,27 +514,9 @@ void execute_command(char *command_string) {
     command = tokens[0];
     arguments = tokens;
 
-  if (_strcmp(command, "setenv") == 0) {
-    /* Check if setenv command and call your setenv function */
-    if (token_count == 3) {
-        _setenv(arguments[1], arguments[2], 1);
-    } else {
-        /* Print error message to stderr */
-        write(2, "setenv: Invalid number of arguments\n", 36);
+    if (handle_builtin(command)) {
+        return; /* If it's a built-in command, return without forking */
     }
-    return;
-  } else if (_strcmp(command, "unsetenv") == 0) {
-    /* Check if unsetenv command and call your unsetenv function */
-    if (token_count == 2) {
-        _unsetenv(arguments[1]);
-    } else {
-        /* Print error message to stderr */
-        write(2, "unsetenv: Invalid number of arguments\n", 38);
-    }
-    return;
-  } else if (handle_builtin(command)) {
-    return; /* If it's a built-in command (other than setenv/unsetenv), return without forking */
-  }
 
     /* Check if it's an absolute path or in the current directory */
     if (command[0] == '/' || command[0] == '.') {
@@ -562,12 +524,13 @@ void execute_command(char *command_string) {
         return;
     }
 
+    /* If not an absolute path or known command, search in the directories specified in the PATH 
+    find_command_in_path(command, arguments); */
+
   /* If not an absolute path or known command, search in the directories specified in the PATH */
   if (!find_command_in_path(command, arguments) && !is_executable(command)) {
   /* If control reaches here, the command was not found */
-    /* Print the program name and error message to stderr */
-    write(2, command, _strlen(command));  /* Write command name */
-    write(2, ": command not found\n", 20);  /* Write error message */
+  fprintf(stderr, "%s: command not found\n", command);
   }
 }
 
@@ -597,12 +560,45 @@ void execute_absolute_path(char *command, char **arguments)
     }
 }
 
+char *_getenv(const char *name)
+{
+    char **env = environ;
+    size_t value_length;
+    char *value;
+
+    while (*env) {
+        const char *env_var = *env;
+        const char *name_ptr = name;
+
+        while (*name_ptr && *env_var == *name_ptr) {
+            env_var++;
+            name_ptr++;
+        }
+
+        if (*name_ptr == '\0' && *env_var == '=') {
+            env_var++; /* Move to the value part after '=' */
+
+            value_length = strlen(env_var);
+            value = (char *)malloc(value_length + 1);
+
+            if (value != NULL) {
+                strcpy(value, env_var);
+                return value;
+            } else {
+                return NULL; /* Handle memory allocation failure */
+            }
+        }
+        env++;
+    }
+    return NULL; /* Return NULL if the variable is not found */
+}
+
 int _putchar(char c)
 {
   return (write(1, &c, 1));
 }
 
-int _strlen(const char *s)
+int _strlen(char *s)
 {
   int i;
 
@@ -908,32 +904,14 @@ void *safe_malloc(size_t size) {
     return ptr;
 }
 
-void *safe_realloc(void *ptr, size_t old_size, size_t new_size) {
-  void *new_ptr;
-  size_t copy_size;
-  
-    if (new_size == 0) {
-        /* If new size is 0, treat it as a free operation */
-        free(ptr);
-        return NULL;
-    }
-
-    new_ptr = malloc(new_size);
+void *safe_realloc(void *ptr, size_t size) {
+    void *new_ptr = realloc(ptr, size);
     if (new_ptr == NULL) {
-        perror("Memory allocation failed");
+        perror("Memory reallocation failed");
         exit(EXIT_FAILURE);
     }
-
-    /* Copy data from the old block to the new one */
-    copy_size = (old_size < new_size) ? old_size : new_size;
-    _memcpy(new_ptr, ptr, copy_size);
-
-    /* Free the old block */
-    free(ptr);
-
     return new_ptr;
 }
-
 
 void free_list_and_strings(list_t *head) {
     while (head != NULL) {
@@ -942,207 +920,4 @@ void free_list_and_strings(list_t *head) {
         free(temp->str);
         free(temp);
     }
-}
-
-char *_memcpy(char *dest, char *src, unsigned int n)
-{
-    unsigned int i;
-
-    for (i = 0; i < n; i++)
-    {
-        *(dest + i) = *(src + i);
-    }
-
-    return (dest);
-}
-
-
-/* Implementation of the _getline function */
-ssize_t _getline(char **lineptr, size_t *n, FILE *stream) {
-  int ch;
-  size_t i;
-  static size_t buffer_size = BUFFER_SIZE;
-    if (*lineptr == NULL || *n == 0) {
-        /* Allocate initial buffer if not provided */
-        *n = buffer_size;
-        *lineptr = (char *)malloc(*n);
-        if (*lineptr == NULL) {
-            return -1;  /* Memory allocation failure */
-        }
-    }
-
-    i = 0;
-
-    /* Read characters until a newline or EOF is encountered */
-    while ((ch = _fgetc(stream)) != EOF && ch != '\n') {
-        /* Check if more space is needed */
-        if (i == *n - 1) {
-            *n *= 2;
-            *lineptr = safe_realloc(*lineptr, i, *n);
-        }
-
-        /* Store the character */
-        (*lineptr)[i++] = (char)ch;
-    }
-
-    /* Check if any characters were read */
-    if (i == 0 && ch == EOF) {
-        return 0;  /* End of file reached */
-    }
-
-    /* Null-terminate the string */
-    (*lineptr)[i] = '\0';
-
-    return i;  /* Number of characters read */
-}
-
-
-int _fgetc(FILE *stream) {
-  char c;
-  ssize_t bytesRead;
-
-    /* Ensure that the stream is not NULL */
-    if (stream == NULL) {
-        return EOF;
-    }
-
-    bytesRead = read(fileno(stream), &c, 1);
-
-    if (bytesRead == 1) {
-        return (unsigned char)c;
-    } else {
-        return EOF; /* End of file or error */
-    }
-}
-
-int _strncmp(const char *s1, const char *s2, size_t n) {
-  size_t i;
-  
-    for (i = 0; i < n; ++i) {
-        if (s1[i] != s2[i]) {
-            return (unsigned char)s1[i] - (unsigned char)s2[i];
-        }
-
-        /* If either string ends before n characters, break the loop */
-        if (s1[i] == '\0' || s2[i] == '\0') {
-            break;
-        }
-    }
-
-    return 0;  /* Strings are equal up to the first n characters */
-}
-
-char *_getenv(const char *name) {
-  char **env;
-  
-    if (name == NULL || *name == '\0') {
-        return NULL /* Invalid input */ ;
-    }
-
-    /* Iterate through the environment variables */
-    for (env = environ; *env != NULL; env++) {
-        /* Check if the current environment variable starts with the specified name */
-        if (_strncmp(*env, name, _strlen(name)) == 0 && (*env)[_strlen(name)] == '=') {
-            /* Return the value part of the environment variable */
-            return *env + _strlen(name) + 1;
-        }
-    }
-
-    return NULL /* Variable not found */ ;
-}
-
-int _setenv(const char *name, const char *value, int overwrite) {
-   char *existingValue;
-  size_t envVarLength;
-  char *newEnvVar;
-  int envSize;
-  char **newEnviron;
-  int i;
-  char *name_clone = _strdup(name);
-  
-    if (name == NULL || *name == '\0' || _strchr(name_clone, '=') != NULL) {
-        return -1 /* Invalid input */ ;
-    }
-
-    /* Check if the variable already exists */
-    existingValue = _getenv(name);
-
-    /* If the variable exists and overwrite is 0, do nothing */
-    if (existingValue != NULL && !overwrite) {
-        return 0;
-    }
-
-    /* Concatenate name=value into a single string */
-    envVarLength = _strlen(name) + _strlen(value) + 2 /* +2 for '=' and null terminator */ ;
-    newEnvVar = (char *)malloc(envVarLength);
-    if (newEnvVar == NULL) {
-        perror("Error allocating memory");
-        exit(EXIT_FAILURE);
-    }
-    snprintf(newEnvVar, envVarLength, "%s=%s", name, value);
-
-    /* Update the environment by reallocating and copying */
-    envSize = 0;
-    while (environ[envSize] != NULL) {
-        envSize++;
-    }
-
-    newEnviron = (char **)malloc((envSize + 2) * sizeof(char *));
-    if (newEnviron == NULL) {
-        perror("Error allocating memory");
-        exit(EXIT_FAILURE);
-    }
-
-    /* Copy existing environment variables */
-    for (i = 0; i < envSize; i++) {
-        newEnviron[i] = environ[i];
-    }
-
-    /* Add the new environment variable */
-    newEnviron[envSize] = newEnvVar;
-    newEnviron[envSize + 1] = NULL;
-
-    /* Update the global environ pointer */
-    environ = newEnviron;
-
-    return 0;
-}
-
-int _unsetenv(const char *name) {
-  char *existingValue;
-  char **env;
-  char **next;
-   char *name_clone = _strdup(name);
-  
-    if (name == NULL || *name == '\0' || _strchr(name_clone, '=') != NULL) {
-        return -1 /* Invalid input */ ;
-    }
-    /* Check if the variable exists */
-    existingValue = _getenv(name);
-
-    /* If the variable does not exist, do nothing */
-    if (existingValue == NULL) {
-        return 0;
-    }
-
-    /* Iterate through the environment variables to find the variable */
-
-    for (env = environ; *env != NULL; env++) {
-        /* Check if the current environment variable starts with the specified name */
-        if (_strncmp(*env, name, _strlen(name)) == 0 && (*env)[_strlen(name)] == '=') {
-            /* Free the memory allocated for the environment variable */
-            free(*env);
-
-            /* Shift the remaining environment variables down to fill the gap */
-            next = env + 1;
-            while (*next != NULL) {
-                *env++ = *next++;
-            }
-            *env = NULL;
-
-            return 0;
-        }
-    }
-
-    return -1 /* Variable not found */ ;
 }

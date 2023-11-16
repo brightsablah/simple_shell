@@ -1,7 +1,6 @@
 #ifndef SHELL_H
 #define SHELL_H
 
-#define BUFFER_SIZE 1024
 #define MAX_ARGS 1024
 #include <stdio.h> /* for printf*/
 #include <unistd.h> /* for fork, execve*/
@@ -30,18 +29,12 @@ typedef struct list_s {
 void trim_trailing_spaces(char *str);
 int find_command_in_path(char *command, char **arguments);
 void *safe_malloc(size_t size);
-void find_and_execute_command_in_path(char *command, char **arguments, char **argv);
+void *safe_realloc(void *ptr, size_t size);
+void find_and_execute_command_in_path(char *command, char **arguments);
 int tokenize_line(char *line, char *tokens[]);
-void execute_cleaned_line(char *cleaned_line, char **argv);
-void execute_non_interactive(FILE *script, char **argv);
+void execute_cleaned_line(char *cleaned_line);
+void execute_non_interactive(FILE *script);
 void free_list_and_strings(list_t *head);
-char *_memcpy(char *dest, char *src, unsigned int n);
-ssize_t _getline(char **lineptr, size_t *n, FILE *stream);
-int _fgetc(FILE *stream);
-void *safe_realloc(void *ptr, size_t old_size, size_t new_size);
-int _strncmp(const char *s1, const char *s2, size_t n);
-int _setenv(const char *name, const char *value, int overwrite);
-int _unsetenv(const char *name);
 
 int wordcount(char *s, char *delimiter);
 char **strtow(char *str, char *delimiter);
@@ -68,7 +61,7 @@ char *_getenv(const char *name);
 
 char *_strdup(const char *str);
 int _putchar(char c);
-int _strlen(const char *s);
+int _strlen(char *s);
 void _puts(char *s);
 char *_strcpy(char *dest, char *src);
 char *_strcat(char *dest, char *src);
