@@ -38,13 +38,13 @@ char *_getenv(const char *name)
 			}
 			else
 			{
-				free(value);
+				free(value);  /* free memory before returning */
 				return (NULL);
 			}
 		}
 		env++;
 		env_var = *env;
 	}
-	free(value);
+	free(value); /* free memory when no matching viriable found */
 	return (NULL);
 }

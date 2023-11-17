@@ -58,7 +58,7 @@ void change_directory(char **arguments)
             }
         }
     }
-    free((char *)home_directory);
+    free((char *)home_directory); /*free memory allocated by _getenv */
 }
 
 int handle_builtin(char *command, char **arguments, char *command_string)
