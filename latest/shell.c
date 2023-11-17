@@ -29,12 +29,10 @@ int main(int argc, char *argv[]) {
         /* Interactive mode */
         char *command_string = NULL;
         size_t command_len = 0;
-        ssize_t readline = 0;
-        int isbuiltin = 0;
+        ssize_t readline;
 
         while (1) {
             print_prompt();
-            isbuiltin = 0;
 
 
             readline = _getline(&command_string, &command_len, stdin);
@@ -53,19 +51,23 @@ int main(int argc, char *argv[]) {
               /* Trim trailing spaces before processing the command */
               trim_trailing_spaces(command_string);
 
-                isbuiltin = handle_builtin(command_string);
-
-                if (isbuiltin == 0) {
+                if (_strncmp(command_string, "exit", 4) == 0) {
+                    exit_shell(command_string);
+                    break;
+              } else if (_strcmp(command_string, "env") == 0) {
+                    print_environment();
+                }
+                else {
                     execute_command(command_string);
                 }
 
 
             }
-                         free(command_string);
-                command_string = NULL;
+
             
         }
-
+                         free(command_string);
+                command_string = NULL;
 
 
     } else {
@@ -495,20 +497,9 @@ int handle_builtin(char *command)
     {
         print_environment();
         return (1); /* Return 1 to indicate that it's a built-in command */
-    } 
-    else if (_strncmp(command, "exit", 4) == 0) 
-    {
-        exit_shell(command);
-        return (1);
     }
-    else if (_strcmp(command, "env") == 0) {
-        print_environment();
-        return (1);
-    }
-    else
-    {
+
     return (0); /* Return 0 for non-built-in commands */
-    }
 }
 
 void execute_command(char *command_string) {
@@ -570,12 +561,9 @@ void execute_command(char *command_string) {
         write(2, "unsetenv: Invalid number of arguments\n", 38);
     }
     return;
-  } 
-  /*
-  else if (handle_builtin(command)) {
-    return;  If it's a built-in command (other than setenv/unsetenv), return without forking 
+  } else if (handle_builtin(command)) {
+    return; /* If it's a built-in command (other than setenv/unsetenv), return without forking */
   }
-*/
 
     /* Check if it's an absolute path or in the current directory */
     if (command[0] == '/' || command[0] == '.') {
