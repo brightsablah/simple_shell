@@ -34,11 +34,9 @@ int main(int argc, char *argv[]) {
         while (1) {
             print_prompt();
 
-
             readline = _getline(&command_string, &command_len, stdin);
 
             if (readline == -1) {
-                free(command_string);
                 exit_shell(NULL); /* No exit status */
                 break;
             }
@@ -60,16 +58,10 @@ int main(int argc, char *argv[]) {
                 else {
                     execute_command(command_string);
                 }
-
-
             }
-
-            
         }
-                         free(command_string);
-                command_string = NULL;
 
-
+        free(command_string);
     } else {
         /* Non-interactive mode */
         if (argc > 1) {
