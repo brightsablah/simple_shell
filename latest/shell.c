@@ -420,6 +420,7 @@ int find_command_in_path(char *command, char **arguments) {
         if (full_path != NULL && access(full_path, X_OK) == 0) {
             execute_absolute_path(full_path, arguments);
             free(full_path);
+            free_list(path_directories);
             return 1;
         }
 
