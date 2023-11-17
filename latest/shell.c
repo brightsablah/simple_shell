@@ -63,6 +63,7 @@ int main(int argc, char *argv[]) {
         }
 
         free(command_string);
+        command_string = NULL;
     } else {
         /* Non-interactive mode */
         if (argc > 1) {
