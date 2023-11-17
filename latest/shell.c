@@ -30,9 +30,11 @@ int main(int argc, char *argv[]) {
         char *command_string = NULL;
         size_t command_len = 0;
         ssize_t readline;
+        int isbuiltin;
 
         while (1) {
             print_prompt();
+            isbuiltin = 0;
 
 
             readline = _getline(&command_string, &command_len, stdin);
@@ -51,23 +53,19 @@ int main(int argc, char *argv[]) {
               /* Trim trailing spaces before processing the command */
               trim_trailing_spaces(command_string);
 
-                if (_strncmp(command_string, "exit", 4) == 0) {
-                    exit_shell(command_string);
-                    break;
-              } else if (_strcmp(command_string, "env") == 0) {
-                    print_environment();
-                }
-                else {
+                isbuiltin = handle_builtin(comman_string);
+
+                if (isbuiltin == 0) {
                     execute_command(command_string);
                 }
 
 
             }
-
-            
-        }
                          free(command_string);
                 command_string = NULL;
+            
+        }
+
 
 
     } else {
@@ -497,9 +495,20 @@ int handle_builtin(char *command)
     {
         print_environment();
         return (1); /* Return 1 to indicate that it's a built-in command */
+    } 
+    else if (_strncmp(command_string, "exit", 4) == 0) 
+    {
+        exit_shell(command_string);
+        return (1);
     }
-
+    else if (_strcmp(command_string, "env") == 0) {
+        print_environment();
+        return (1);
+    }
+    else
+    {
     return (0); /* Return 0 for non-built-in commands */
+    }
 }
 
 void execute_command(char *command_string) {
