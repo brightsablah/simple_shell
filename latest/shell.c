@@ -496,12 +496,12 @@ int handle_builtin(char *command)
         print_environment();
         return (1); /* Return 1 to indicate that it's a built-in command */
     } 
-    else if (_strncmp(command_string, "exit", 4) == 0) 
+    else if (_strncmp(command, "exit", 4) == 0) 
     {
-        exit_shell(command_string);
+        exit_shell(command);
         return (1);
     }
-    else if (_strcmp(command_string, "env") == 0) {
+    else if (_strcmp(command, "env") == 0) {
         print_environment();
         return (1);
     }
