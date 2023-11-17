@@ -570,9 +570,12 @@ void execute_command(char *command_string) {
         write(2, "unsetenv: Invalid number of arguments\n", 38);
     }
     return;
-  } else if (handle_builtin(command)) {
-    return; /* If it's a built-in command (other than setenv/unsetenv), return without forking */
+  } 
+  /*
+  else if (handle_builtin(command)) {
+    return;  If it's a built-in command (other than setenv/unsetenv), return without forking 
   }
+*/
 
     /* Check if it's an absolute path or in the current directory */
     if (command[0] == '/' || command[0] == '.') {
