@@ -37,8 +37,8 @@ int main(int argc, char *argv[]) {
             readline = _getline(&command_string, &command_len, stdin);
 
             if (readline == -1) {
-                free(command_string);
                 exit_shell(NULL); /* No exit status */
+                free(command_string);
                 break;
             }
 
