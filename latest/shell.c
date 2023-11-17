@@ -37,8 +37,8 @@ int main(int argc, char *argv[]) {
             readline = _getline(&command_string, &command_len, stdin);
 
             if (readline == -1) {
-                exit_shell(NULL); /* No exit status */
                 free(command_string); /* free commands string since memory allocation failed */
+                exit_shell(NULL); /* No exit status */
                 break;
             }
 
