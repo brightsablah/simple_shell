@@ -34,7 +34,7 @@ int main(int argc, char *argv[]) {
         while (1) {
             print_prompt();
 
-            readline = getline(&command_string, &command_len, stdin);
+            readline = _getline(&command_string, &command_len, stdin);
 
             if (readline == -1) {
                 exit_shell(NULL); /* No exit status */
