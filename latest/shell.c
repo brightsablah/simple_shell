@@ -53,7 +53,7 @@ int main(int argc, char *argv[]) {
               /* Trim trailing spaces before processing the command */
               trim_trailing_spaces(command_string);
 
-                isbuiltin = handle_builtin(comman_string);
+                isbuiltin = handle_builtin(command_string);
 
                 if (isbuiltin == 0) {
                     execute_command(command_string);
