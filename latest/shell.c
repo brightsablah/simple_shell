@@ -27,13 +27,13 @@ void trim_trailing_spaces(char *str) {
 int main(int argc, char *argv[]) {
     if (isatty(STDIN_FILENO)) {
         /* Interactive mode */
-        char *command_string;
+        char *command_string = NULL;
         size_t command_len = 0;
         ssize_t readline;
 
         while (1) {
             print_prompt();
-            command_string = NULL;
+
 
             readline = _getline(&command_string, &command_len, stdin);
 
@@ -53,7 +53,6 @@ int main(int argc, char *argv[]) {
 
                 if (_strncmp(command_string, "exit", 4) == 0) {
                     exit_shell(command_string);
-                   free(command_string);
                     break;
               } else if (_strcmp(command_string, "env") == 0) {
                     print_environment();
@@ -64,10 +63,11 @@ int main(int argc, char *argv[]) {
 
 
             }
-                 free(command_string);
-               
+
             
         }
+                         free(command_string);
+                command_string = NULL;
 
 
     } else {
