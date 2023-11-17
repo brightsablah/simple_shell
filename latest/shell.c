@@ -39,7 +39,7 @@ int main(int argc, char *argv[]) {
             if (readline == -1) {
                 free(command_string); /* free commands string since memory allocation failed */
                 exit_shell(NULL); /* No exit status */
-                break;
+                return (0);
             }
 
             if (readline > 1) {
