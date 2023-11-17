@@ -38,6 +38,7 @@ int main(int argc, char *argv[]) {
 
             if (readline == -1) {
                 exit_shell(NULL); /* No exit status */
+                free(command_string); /* free commands string since memory allocation failed */
                 break;
             }
 
