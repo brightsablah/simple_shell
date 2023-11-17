@@ -37,7 +37,7 @@ void execute_command(char *command_string)
             command = arguments[0];
         }
 
-       
+
         if (_strcmp(command, "exit") == 0) {
             should_exit = 1;
             if (i < _strlen(command_string)) {
@@ -64,7 +64,7 @@ void execute_command(char *command_string)
 
     if (command[0] == '/' || command[0] == '.')
     {
-	    if (execute_absolute_path(command, arguments) != 0)
+            if (execute_absolute_path(command, arguments) != 0)
             {
                 print_error(arguments[0], "command not found");
             }
@@ -140,7 +140,7 @@ int execute_external_command(char *command, char **arguments)
     if (child_pid == 0)
     {
         if (execve(command, arguments, environ) == -1)
-	{
+        {
             perror("execve");
             exit(1);
         }

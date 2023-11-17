@@ -38,6 +38,7 @@ char *_getenv(const char *name)
 			}
 			else
 			{
+			       
 				return (NULL);
 			}
 		}

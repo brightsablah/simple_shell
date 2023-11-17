@@ -48,15 +48,18 @@ int main(int argc, char *argv[])
     {
         while (1)
         {
-		if (isatty(STDIN_FILENO)) {
+            if (isatty(STDIN_FILENO))
+            {
                 print_prompt();
             }
-                      readline = getline(&command_string, &com_len, stdin);
+            readline = getline(&command_string, &com_len, stdin);
             if (readline == -1)
             {
+		    free(command_string);  /* Free memory if getline fails */
                 exit_shell(NULL);
                 break;
             }
+
             if (readline > 1)
             {
                 if (command_string[readline - 1] == '\n')
@@ -64,8 +67,9 @@ int main(int argc, char *argv[])
 
                 execute_command(command_string);
             }
+            free(command_string);
+            command_string = NULL;
         }
-        free(command_string);
     }
 
     return 0;

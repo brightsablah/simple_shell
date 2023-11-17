@@ -84,11 +84,14 @@ char *_strdup(const char *str)
 		return (NULL);
 
 	while (str[len] != '\0')
-		(len++);
+		len++;
 
 	duplicate = malloc((len + 1) * sizeof(char));
 	if (duplicate == NULL)
+	{
+		
 		return (NULL);
+	}
 
 	for (i = 0; i <= len; i++)
 	{

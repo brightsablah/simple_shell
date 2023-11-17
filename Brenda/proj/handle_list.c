@@ -29,27 +29,27 @@ void free_list(list_t *head)
 list_t *add_node(list_t **head, const char *str)
 {
 	list_t *new_node;
-	unsigned int dup_len = 0;
-	char *dup;
+    unsigned int dup_len = 0;
+    char *dup;
 
-	new_node = malloc(sizeof(list_t));
-	if (new_node == NULL)
-		return (NULL);
+    new_node = malloc(sizeof(list_t));
+    if (new_node == NULL)
+        return (NULL);
 
-	dup = _strdup(str);
-	if (dup == NULL)
-	{
-		free(new_node);
-		return (NULL);
-	}
+    dup = _strdup(str);
+    if (dup == NULL)
+    {
+        free(new_node);
+        return (NULL);
+    }
 
-	while (dup[dup_len] != '\0')
-		dup_len++;
+    while (dup[dup_len] != '\0')
+        dup_len++;
 
-	new_node->str = dup;
-	new_node->len = dup_len;
-	new_node->next = *head;
-	*head = new_node;
+    new_node->str = dup;
+    new_node->len = dup_len;
+    new_node->next = *head;
+    *head = new_node;
 
-	return (new_node);
+    return (new_node);
 }

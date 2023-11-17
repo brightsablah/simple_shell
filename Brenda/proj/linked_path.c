@@ -8,28 +8,29 @@
  */
 list_t *linked_path(char *name)
 {
-	char *path = _getenv(name);
-	list_t *head = NULL;
-	char *directory = path;
-	char *current_char = path;
+    
+    char *path = _getenv(name);
+    list_t *head = NULL;
+    char *directory = path;
+    char *current_char = path;
 
-	if (path == NULL)
-		return (NULL);
+    if (path == NULL)
+        return (NULL);
+    while (*current_char != '\0')
+    {
+        if (*current_char == ':')
+        {
+            *current_char = '\0';
+            add_node(&head, directory);
+            directory = current_char + 1;
+        }
+        current_char++;
+    }
+    add_node(&head, directory);
 
-	while (*current_char != '\0')
-	{
-		if (*current_char == ':')
-		{
-			*current_char = '\0';
-			add_node(&head, directory);
-			directory = current_char + 1;
-		}
-		current_char++;
-	}
+    free(path);
 
-	add_node(&head, directory);
-
-	return (head);
+    return (head);
 }
 
 /**
@@ -53,6 +54,7 @@ void find_command_in_path(char *command, char **arguments)
 		{
 			execute_absolute_path(full_path, arguments);
 			free(full_path);
+			free_list(path_directories);
 			return;
 		}
 		free(full_path);
@@ -70,7 +72,7 @@ void find_command_in_path(char *command, char **arguments)
  */
 char *construct_path(char *directory, char *command)
 {
-	size_t path_length = strlen(directory) + strlen(command) + 2; /* '\0' */
+	size_t path_length = _strlen(directory) + _strlen(command) + 2; /* '\0' */
 	char *full_path = malloc(path_length);
 
 	if (full_path == NULL)
