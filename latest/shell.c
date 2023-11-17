@@ -39,7 +39,7 @@ int main(int argc, char *argv[]) {
             if (readline == -1) {
                 exit_shell(NULL); /* No exit status */
                 free(command_string);
-                break;
+                return (0);
             }
 
             if (readline > 1) {
@@ -53,7 +53,7 @@ int main(int argc, char *argv[]) {
                 if (_strncmp(command_string, "exit", 4) == 0) {
                     exit_shell(command_string);
                     free(command_string);
-                    break;
+                    return (0);
               } else if (_strcmp(command_string, "env") == 0) {
                     print_environment();
                 }
