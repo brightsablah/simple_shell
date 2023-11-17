@@ -29,8 +29,8 @@ int main(int argc, char *argv[]) {
         /* Interactive mode */
         char *command_string = NULL;
         size_t command_len = 0;
-        ssize_t readline;
-        int isbuiltin;
+        ssize_t readline = 0;
+        int isbuiltin = 0;
 
         while (1) {
             print_prompt();
