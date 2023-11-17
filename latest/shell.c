@@ -60,11 +60,12 @@ int main(int argc, char *argv[]) {
                 else {
                     execute_command(command_string);
                 }
-                 free(command_string);
-                command_string = NULL;
+
 
             }
-
+                 free(command_string);
+                command_string = NULL;
+            
         }
 
 
