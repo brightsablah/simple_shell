@@ -58,6 +58,7 @@ void change_directory(char **arguments)
             }
         }
     }
+    free((char *)home_directory);
 }
 
 int handle_builtin(char *command, char **arguments, char *command_string)
@@ -74,7 +75,6 @@ int handle_builtin(char *command, char **arguments, char *command_string)
     else if (_strcmp(command, "cd") == 0)
     {
         change_directory(arguments);
-        free(command_string);
     }
 
     return 0;
