@@ -8,7 +8,6 @@
  */
 list_t *linked_path(char *name)
 {
-    
     char *path = _getenv(name);
     list_t *head = NULL;
     char *directory = path;

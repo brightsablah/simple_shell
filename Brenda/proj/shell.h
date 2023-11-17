@@ -42,7 +42,7 @@ int _atoi(char *s);
 void change_directory(char **arguments);
 void exit_shell(char **arguments);
 void execute_command(char *command_string);
-int handle_builtin(char *command, char **arguments, char *command_string);
+int handle_builtin(char *command_string, char **arguments);
 int execute_absolute_path(char *command, char **arguments);
 
 char *remove_extra_spaces(const char *input);

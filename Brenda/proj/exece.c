@@ -58,7 +58,7 @@ void execute_command(char *command_string)
         exit(exit_status);
     }
 
-    if (handle_builtin(command, arguments, command_string)) {
+    if (handle_builtin(command, arguments)) {
         return;
     }
 
@@ -93,7 +93,7 @@ int execute_absolute_path(char *command, char **arguments)
 
     if (_strcmp(command, "exit") == 0)
     {
-        exit_shell(arguments);
+	    exit_shell(arguments);
         return 0;
     }
 

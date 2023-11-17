@@ -60,19 +60,18 @@ void change_directory(char **arguments)
     }
 }
 
-int handle_builtin(char *command, char **arguments, char *command_string)
+int handle_builtin(char *command_string, char **arguments)
 {
-    if (_strcmp(command, "env") == 0)
+    if (_strcmp(command_string, "env") == 0)
     {
         print_environment();
-        free(command_string);
     }
-    else if (_strcmp(command, "exit") == 0)
+    else if (_strcmp(command_string, "exit") == 0)
     {
-        exit_shell(arguments);
-        free(command_string);
+	    free(command_string);
+	    exit_shell(arguments);
     }
-    else if (_strcmp(command, "cd") == 0)
+    else if (_strcmp(command_string, "cd") == 0)
     {
         change_directory(arguments);
         free(command_string);
