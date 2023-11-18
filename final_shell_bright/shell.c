@@ -56,5 +56,10 @@ int main(int argc, char *argv[])
         }
     }
 
+	if (command_string != NULL)
+	{
+		free(command_string);
+		command_string = NULL;
+	}
     return 0;
 }
