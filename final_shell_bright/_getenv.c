@@ -8,12 +8,14 @@
  * or NULL if the variable is not found.
  */
 char *_getenv(const char *name) {
+    char **env;
+    
     if (name == NULL || *name == '\0') {
         return NULL; /* Invalid input */
     }
 
     /* Iterate through the environment variables */
-    for (char **env = environ; *env != NULL; env++) {
+    for (env = environ; *env != NULL; env++) {
         /* Check if the current environment variable starts with the specified name */
         if (strncmp(*env, name, strlen(name)) == 0 && (*env)[strlen(name)] == '=') {
             /* Return the value part of the environment variable */
