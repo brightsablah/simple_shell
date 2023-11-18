@@ -57,6 +57,6 @@ int main(int argc, char *argv[])
             command_string = NULL;
         }
     }
-
+printf("End of main reached. program about to return 0");
     return 0;
 }
