@@ -13,7 +13,8 @@ int _setenv(const char *name, const char *value, int overwrite) {
 char *existingValue;
     char *newEnvVar;
     size_t envVarLength;
-    int envSize;
+    int envSize, i;
+    char **newEnviron;
     
     if (name == NULL || *name == '\0' || strchr(name, '=') != NULL) {
         return -1; /* Invalid input */
@@ -42,14 +43,14 @@ char *existingValue;
         envSize++;
     }
 
-    char **newEnviron = (char **)malloc((envSize + 2) * sizeof(char *));
+    newEnviron = (char **)malloc((envSize + 2) * sizeof(char *));
     if (newEnviron == NULL) {
         perror("Error allocating memory");
         exit(EXIT_FAILURE);
     }
 
     /* Copy existing environment variables and free old env */
-    for (int i = 0; i < envSize; i++) {
+    for (i = 0; i < envSize; i++) {
         newEnviron[i] = environ[i];
     }
     /* free(environ); */
