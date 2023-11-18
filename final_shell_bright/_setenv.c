@@ -10,12 +10,17 @@
  * Return: 0 on success, -1 on failure.
  */
 int _setenv(const char *name, const char *value, int overwrite) {
+char *existingValue;
+    char *newEnvVar;
+    size_t envVarLength;
+    int envSize;
+    
     if (name == NULL || *name == '\0' || strchr(name, '=') != NULL) {
         return -1; /* Invalid input */
     }
 
     /* Check if the variable already exists */
-    char *existingValue = _getenv(name);
+    existingValue = _getenv(name);
 
     /* If the variable exists and overwrite is 0, do nothing */
     if (existingValue != NULL && !overwrite) {
@@ -23,8 +28,8 @@ int _setenv(const char *name, const char *value, int overwrite) {
     }
 
     /* Concatenate name=value into a single string */
-    size_t envVarLength = strlen(name) + strlen(value) + 2; /* +2 for '=' and null terminator */
-    char *newEnvVar = (char *)malloc(envVarLength);
+    envVarLength = strlen(name) + strlen(value) + 2; /* +2 for '=' and null terminator */
+    newEnvVar = (char *)malloc(envVarLength);
     if (newEnvVar == NULL) {
         perror("Error allocating memory");
         exit(EXIT_FAILURE);
@@ -32,7 +37,7 @@ int _setenv(const char *name, const char *value, int overwrite) {
     snprintf(newEnvVar, envVarLength, "%s=%s", name, value);
 
     /* Update the environment by reallocating and copying */
-    int envSize = 0;
+    envSize = 0;
     while (environ[envSize] != NULL) {
         envSize++;
     }
