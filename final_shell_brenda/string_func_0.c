@@ -89,7 +89,6 @@ char *_strdup(const char *str)
 	duplicate = malloc((len + 1) * sizeof(char));
 	if (duplicate == NULL)
 	{
-		
 		return (NULL);
 	}
 

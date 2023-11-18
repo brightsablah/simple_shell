@@ -12,7 +12,7 @@ char *_getenv(const char *name)
 	char *env_var;
 	const char *name_ptr;
 	size_t value_length;
-	char *value;
+	char *value = NULL;
 
 	env_var = *env;
 
@@ -38,12 +38,13 @@ char *_getenv(const char *name)
 			}
 			else
 			{
-			       
+				free(value);  /* free memory before returning */
 				return (NULL);
 			}
 		}
 		env++;
 		env_var = *env;
 	}
+	free(value); /* free memory when no matching viriable found */
 	return (NULL);
 }
