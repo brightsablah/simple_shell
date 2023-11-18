@@ -36,6 +36,15 @@ int main(int argc, char *argv[])
             {
                 print_prompt();
             }
+
+	atexit(cleanup(command_string));
+
+	/* Set up signal handling for SIGINT */
+    struct sigaction sa;
+    sa.sa_handler = handle_sigint;
+    sa.sa_flags = 0;
+    sigaction(SIGINT, &sa, NULL);
+		
             readline = _getline(&command_string, &com_len, stdin);
             if (readline == -1)
             {
@@ -59,4 +68,15 @@ int main(int argc, char *argv[])
     }
 printf("End of main reached. program about to return 0");
     return 0;
+}
+
+void cleanup(char *command_string) {
+    /* Free allocated memory */
+    free(command_string);
+    printf("Cleanup: Freed allocated memory.\n");
+}
+
+void handle_sigint(int signo) {
+    printf("\nCtrl+C received. Program interrupted.\n");
+    exit(EXIT_FAILURE);
 }
