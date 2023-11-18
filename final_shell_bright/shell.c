@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
             if (readline == -1)
             {
 		    free(command_string);  /* Free memory if getline fails */
-                exit_shell(NULL);
+                exit(0);
                 break;
             }
 
