@@ -1,4 +1,3 @@
-#include "main.h"
 #include "shell.h"
 
 /**
@@ -39,13 +38,13 @@ char *_getenv(const char *name)
 			}
 			else
 			{
-				free(value);  /* free memory before returning */
+				free(value);
 				return (NULL);
 			}
 		}
 		env++;
 		env_var = *env;
 	}
-	free(value); /* free memory when no matching viriable found */
+	free(value);
 	return (NULL);
 }

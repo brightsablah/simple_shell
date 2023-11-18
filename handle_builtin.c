@@ -1,4 +1,3 @@
-#include "main.h"
 #include "shell.h"
 
 /**
@@ -59,7 +58,7 @@ void change_directory(char **arguments)
             }
         }
     }
-    free((char *)home_directory); /*free memory allocated by _getenv */
+    free((char *)home_directory);
 }
 
 int handle_builtin(char *command, char **arguments, char *command_string)
