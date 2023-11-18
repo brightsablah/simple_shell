@@ -27,10 +27,11 @@ char **command_string_tracker = NULL;
 int main(int argc, char *argv[])
 {
     char *command_string = NULL;
-	command_string_tracker = &command_string;
     size_t com_len = 0;
     ssize_t readline;
     FILE *script;
+
+	command_string_tracker = &command_string;
 
     if (argc > 1)
     {
@@ -82,6 +83,6 @@ int main(int argc, char *argv[])
 
 void cleanup(void){
 	if ((*command_string_tracker) != NULL) {
-		free(*command_string_tracker)
+		free(*command_string_tracker);
 			}
 }
