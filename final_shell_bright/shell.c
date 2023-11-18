@@ -34,6 +34,8 @@ int main(int argc, char *argv[])
     }
     else
     {
+	atexit(cleanup);
+	    
         while (1)
         {
             if (isatty(STDIN_FILENO))
@@ -41,7 +43,7 @@ int main(int argc, char *argv[])
                 print_prompt();
             }
 
-	atexit(cleanup);
+	
 
 	/* Set up signal handling for SIGINT */
    
