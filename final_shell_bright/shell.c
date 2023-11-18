@@ -41,8 +41,8 @@ int main(int argc, char *argv[])
             {
 		free(command_string);  /* Free memory if getline fails */
 		command_string = NULL;
-                /* exit_shell(NULL); */
-                break;
+                exit(0);
+                /* break;*/
             }
 
             if (readline > 1)
@@ -57,10 +57,5 @@ int main(int argc, char *argv[])
         }
     }
 
-	if (command_string != NULL)
-	{
-		free(command_string);
-		command_string = NULL;
-	}
     return 0;
 }
