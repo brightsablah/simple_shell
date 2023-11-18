@@ -3,6 +3,7 @@
 
 #define MAX_ARGS 1024
 #define BUFSIZ 1024
+#define BUFFER_SIZE 1024
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -33,6 +34,14 @@ typedef struct list_s
 	unsigned int len;
 	struct list_s *next;
 } list_t;
+
+void cleanup(void);
+ssize_t _getline(char **lineptr, size_t *n, FILE *stream);
+ssize_t _getline(char **lineptr, size_t *n, FILE *stream);
+void *safe_realloc(void *ptr, size_t old_size, size_t new_size);
+char *_memcpy(char *dest, char *src, unsigned int n);
+int _fgetc(FILE *stream);
+
 
 int execute_external_command(char *command, char **arguments);
 void print_error(const char *program_name, const char *message);
