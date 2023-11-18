@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
                 print_prompt();
             }
 
-	atexit(cleanup(command_string));
+	atexit(cleanup);
 
 	/* Set up signal handling for SIGINT */
    
@@ -78,6 +78,7 @@ void cleanup(void) {
 }
 
 void handle_sigint(int signo) {
+	(void)signo;
     printf("\nCtrl+C received. Program interrupted.\n");
     exit(EXIT_FAILURE);
 }
