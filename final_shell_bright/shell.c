@@ -39,8 +39,8 @@ int main(int argc, char *argv[])
             readline = getline(&command_string, &com_len, stdin);
             if (readline == -1)
             {
-		    free(command_string);  /* Free memory if getline fails */
-                exit(0);
+		free(command_string);  /* Free memory if getline fails */
+                exit_shell(NULL);
                 break;
             }
 
