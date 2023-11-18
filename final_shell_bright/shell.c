@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
             {
 		free(command_string);  /* Free memory if getline fails */
 		command_string = NULL;
-		    printf("command string freed. program about to exit");
+		   /* printf("command string freed. program about to exit"); */
                 exit(0);
                 /* break;*/
             }
@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
             command_string = NULL;
         }
     }
-printf("End of main reached. program about to return 0");
+/*printf("End of main reached. program about to return 0");*/
     return 0;
 }
 
@@ -81,11 +81,11 @@ void cleanup(void) {
     /* Free allocated memory */
 if ((*command_string_tracker) != NULL){
     free(*command_string_tracker);
-    printf("Cleanup: Freed unfreed allocated memory.\n");
+    /*printf("Cleanup: Freed unfreed allocated memory.\n");*/
 	}
 }
 void handle_sigint(int signo) {
 	(void)signo;
-    printf("\nCtrl+C received. Program interrupted.\n");
+    /*printf("\nCtrl+C received. Program interrupted.\n");*/
     exit(EXIT_FAILURE);
 }
