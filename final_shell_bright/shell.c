@@ -49,6 +49,7 @@ int main(int argc, char *argv[])
    
     sa.sa_handler = handle_sigint;
     sa.sa_flags = 0;
+	sigemptyset(&sa.sa_mask);  // Initialize sa_mask to an empty signal set
     sigaction(SIGINT, &sa, NULL);
 		
             readline = _getline(&command_string, &com_len, stdin);
@@ -78,10 +79,11 @@ printf("End of main reached. program about to return 0");
 
 void cleanup(void) {
     /* Free allocated memory */
+if ((*command_string_tracker) != NULL)){
     free(*command_string_tracker);
-    printf("Cleanup: Freed allocated memory.\n");
+    printf("Cleanup: Freed unfreed allocated memory.\n");
+	}
 }
-
 void handle_sigint(int signo) {
 	(void)signo;
     printf("\nCtrl+C received. Program interrupted.\n");
