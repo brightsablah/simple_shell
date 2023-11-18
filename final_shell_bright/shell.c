@@ -13,6 +13,7 @@ int main(int argc, char *argv[])
     size_t com_len = 0;
     ssize_t readline;
     FILE *script;
+	 struct sigaction sa;
 
     if (argc > 1)
     {
@@ -40,7 +41,7 @@ int main(int argc, char *argv[])
 	atexit(cleanup(command_string));
 
 	/* Set up signal handling for SIGINT */
-    struct sigaction sa;
+   
     sa.sa_handler = handle_sigint;
     sa.sa_flags = 0;
     sigaction(SIGINT, &sa, NULL);
@@ -70,7 +71,7 @@ printf("End of main reached. program about to return 0");
     return 0;
 }
 
-void cleanup(char *command_string) {
+void cleanup(void) {
     /* Free allocated memory */
     free(command_string);
     printf("Cleanup: Freed allocated memory.\n");
