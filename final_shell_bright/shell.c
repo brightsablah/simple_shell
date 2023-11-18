@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
             {
                 print_prompt();
             }
-            readline = _getline(&command_string, &com_len, stdin);
+            readline = getline(&command_string, &com_len, stdin);
             if (readline == -1)
             {
 		free(command_string);  /* Free memory if getline fails */
