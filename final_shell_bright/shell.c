@@ -36,11 +36,11 @@ int main(int argc, char *argv[])
             {
                 print_prompt();
             }
-            readline = getline(&command_string, &com_len, stdin);
+            readline = _getline(&command_string, &com_len, stdin);
             if (readline == -1)
             {
-		    free(command_string);  /* Free memory if getline fails */
-                exit_shell(NULL);
+		free(command_string);  /* Free memory if getline fails */
+                /* exit_shell(NULL); */
                 break;
             }
 
@@ -56,5 +56,10 @@ int main(int argc, char *argv[])
         }
     }
 
+	if (command_string != NULL)
+	{
+		free(command_string);
+		command_string = NULL;
+	}
     return 0;
 }
