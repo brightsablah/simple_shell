@@ -36,11 +36,12 @@ int main(int argc, char *argv[])
             {
                 print_prompt();
             }
-            readline = getline(&command_string, &com_len, stdin);
+            readline = _getline(&command_string, &com_len, stdin);
             if (readline == -1)
             {
 		free(command_string);  /* Free memory if getline fails */
 		command_string = NULL;
+		    printf("command string freed. program about to exit");
                 exit(0);
                 /* break;*/
             }
