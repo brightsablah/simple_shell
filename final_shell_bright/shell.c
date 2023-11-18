@@ -1,5 +1,7 @@
 #include "shell.h"
 
+char **command_string_tracker = NULL;
+
 /**
  * main - Entry point to the shell
  * @argc: number of arguments
@@ -14,6 +16,7 @@ int main(int argc, char *argv[])
     ssize_t readline;
     FILE *script;
 	 struct sigaction sa;
+	command_string_tracker = &command_string;
 
     if (argc > 1)
     {
@@ -73,7 +76,7 @@ printf("End of main reached. program about to return 0");
 
 void cleanup(void) {
     /* Free allocated memory */
-    free(command_string);
+    free(*command_string_tracker);
     printf("Cleanup: Freed allocated memory.\n");
 }
 
