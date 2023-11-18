@@ -1,3 +1,4 @@
+#include "main.h"
 int wordcount(char *s, char *delimiter) {
     int i;
     int count = 0;
