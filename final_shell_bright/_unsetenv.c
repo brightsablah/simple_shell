@@ -8,12 +8,16 @@
  * Return: 0 on success, -1 on failure.
  */
 int _unsetenv(const char *name) {
+char *existingValue;
+char **env;
+    char **next;
+    
     if (name == NULL || *name == '\0' || strchr(name, '=') != NULL) {
         return -1; /* Invalid input */
     }
 
     /* Check if the variable exists */
-    char *existingValue = _getenv(name);
+    existingValue = _getenv(name);
 
     /* If the variable does not exist, do nothing */
     if (existingValue == NULL) {
@@ -21,7 +25,7 @@ int _unsetenv(const char *name) {
     }
 
     /* Iterate through the environment variables to find the variable */
-    char **env;
+    
     for (env = environ; *env != NULL; env++) {
         /* Check if the current environment variable starts with the specified name */
         if (strncmp(*env, name, strlen(name)) == 0 && (*env)[strlen(name)] == '=') {
@@ -29,7 +33,7 @@ int _unsetenv(const char *name) {
             free(*env);
 
             /* Shift the remaining environment variables down to fill the gap */
-            char **next = env + 1;
+            next = env + 1;
             while (*next != NULL) {
                 *env++ = *next++;
             }
