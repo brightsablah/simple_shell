@@ -25,6 +25,7 @@ int main(int argc, char *argv[])
         {
             nonInteractiveMode(script);
             fclose(script);
+		return (0);
         }
         else
         {
