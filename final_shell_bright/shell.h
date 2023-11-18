@@ -35,6 +35,9 @@ typedef struct list_s
 	struct list_s *next;
 } list_t;
 
+void cleanup(void);
+void handle_sigint(int signo);
+
 ssize_t _getline(char **lineptr, size_t *n, FILE *stream);
 void *safe_realloc(void *ptr, size_t old_size, size_t new_size);
 char *_memcpy(char *dest, char *src, unsigned int n);
