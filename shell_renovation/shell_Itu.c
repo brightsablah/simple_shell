@@ -15,7 +15,6 @@ void print_prompt(void)
 	write(STDOUT_FILENO, prompt, sizeof(prompt));
 }
 
-char **command_string_tracker = NULL;
 
 /**
  * main - Entry point to the shell
@@ -30,8 +29,6 @@ int main(int argc, char *argv[])
     size_t com_len = 0;
     ssize_t readline;
     FILE *script;
-
-	command_string_tracker = &command_string;
 
     if (argc > 1)
     {
@@ -49,15 +46,12 @@ int main(int argc, char *argv[])
     }
     else
     {
-	atexit(cleanup);
-	    
         while (1)
         {
             if (isatty(STDIN_FILENO))
             {
                 print_prompt();
             }
-		
             readline = _getline(&command_string, &com_len, stdin);
             if (readline == -1)
             {
@@ -79,10 +73,4 @@ int main(int argc, char *argv[])
     }
 
     return 0;
-}
-
-void cleanup(void){
-	if ((*command_string_tracker) != NULL) {
-		free(*command_string_tracker);
-			}
 }
