@@ -65,9 +65,7 @@ int main(int argc, char *argv[])
                 if (command_string[readline - 1] == '\n')
                     command_string[readline - 1] = '\0';
 
-    printf("Before execute_command: %s\n", command_string);
     execute_command(command_string);
-    printf("After execute_command\n");
 
             }
             free(command_string);
