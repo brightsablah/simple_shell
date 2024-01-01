@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
             {
                 print_prompt();
             }
-            readline = _getline(&command_string, &com_len, stdin);
+            readline = getline(&command_string, &com_len, stdin);
             if (readline == -1)
             {
 		    free(command_string);  /* Free memory if getline fails */
@@ -65,7 +65,10 @@ int main(int argc, char *argv[])
                 if (command_string[readline - 1] == '\n')
                     command_string[readline - 1] = '\0';
 
-                execute_command(command_string);
+    printf("Before execute_command: %s\n", command_string);
+    execute_command(command_string);
+    printf("After execute_command\n");
+
             }
             free(command_string);
             command_string = NULL;

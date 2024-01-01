@@ -43,11 +43,6 @@ void execute_command(char *command_string)
             if (i < _strlen(command_string)) {
                 exit_status = _atoi(&command_string[i + 1]);
             }
-            else
-            {
-                exit_status = 0;
-            }
-    
         }
 
         i++;

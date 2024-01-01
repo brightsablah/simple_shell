@@ -94,7 +94,9 @@ void nonInteractiveMode(FILE *script) {
             }
             cleaned_line = remove_extra_spaces(line);
             if (cleaned_line != NULL) {
-                if (is_executable(cleaned_line)) {
+					if (strcmp(cleaned_line, "env") == 0) {
+						print_environment();}
+                else if (is_executable(cleaned_line)) {
                     execute_command(cleaned_line);
                 }
                 free(cleaned_line);

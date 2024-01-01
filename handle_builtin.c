@@ -6,13 +6,14 @@
 void print_environment(void)
 {
     extern char **environ;
-    int len = 0;
+    int len = 0, count = 0;
 
-    while (environ[len] != NULL)
+    while ((environ[len] != NULL) && (count < 10))
     {
         write(STDOUT_FILENO, environ[len], _strlen(environ[len]));
         write(STDOUT_FILENO, "\n", 1);
         len++;
+			count++;
     }
 }
 
@@ -68,16 +69,14 @@ int handle_builtin(char *command, char **arguments, char *command_string)
     }
     else if (_strcmp(command, "exit") == 0)
     {
-	free(command_string);
         exit_shell(arguments);
-
+        free(command_string);
     }
     else if (_strcmp(command, "cd") == 0)
     {
         change_directory(arguments);
         free(command_string);
     }
-
 
     return 0;
 }
