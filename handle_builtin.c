@@ -81,7 +81,7 @@ int handle_builtin(char *command, char **arguments, char *command_string)
     {
         if (arguments[1] != NULL && arguments[2] != NULL && arguments[3] == NULL)
         {
-            if (_setenv(arguments[1], arguments[2], 1) == -1)
+            if (setenv(arguments[1], arguments[2], 1) == -1)
             {
                 perror("setenv");
             }
@@ -95,7 +95,7 @@ int handle_builtin(char *command, char **arguments, char *command_string)
     {
         if (arguments[1] != NULL && arguments[2] == NULL)
         {
-            if (_unsetenv(arguments[1]) == -1)
+            if (unsetenv(arguments[1]) == -1)
             {
                 perror("unsetenv");
             }
