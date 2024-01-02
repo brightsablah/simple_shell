@@ -1,5 +1,18 @@
 #include "shell.h"
 
+void print_current_environment(void)
+{
+    char **env_var = environ;
+
+    while (*env_var)
+    {
+        _puts(*env_var);
+        env_var++;
+    }
+}
+
+
+
 /**
  * _setenv - Change or add an environment variable.
  * @name: Name of the environment variable.

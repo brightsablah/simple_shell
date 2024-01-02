@@ -66,7 +66,7 @@ int handle_builtin(char *command, char **arguments, char *command_string)
 {
     if (_strcmp(command, "env") == 0)
     {
-       print_environment();
+       print_current_environment();
     }
     else if (_strcmp(command, "exit") == 0)
     {
@@ -106,5 +106,5 @@ int handle_builtin(char *command, char **arguments, char *command_string)
             print_error(command, "usage: unsetenv VARIABLE");
         }
     }
-    return 0;
+    return 1;
 }
