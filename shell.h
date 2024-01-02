@@ -73,4 +73,7 @@ unsigned int _strspn(char *s, char *accept);
 char *_strpbrk(char *s, char *accept);
 char *_strstr(char *haystack, char *needle);
 
+int _unsetenv(const char *name);
+int _setenv(const char *name, const char *value, int overwrite);
+
 #endif
