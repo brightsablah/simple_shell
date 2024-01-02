@@ -45,7 +45,7 @@ void _exit_shell(char *argument, char *command_string, char *copied_user_input)
 				free(copied_user_input);
 				free(command_string);
 
-            exit(EXIT_FAILURE);
+            exit(2);
         }
 
     }
