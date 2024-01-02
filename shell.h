@@ -76,5 +76,6 @@ char *_strstr(char *haystack, char *needle);
 int _unsetenv(const char *name);
 int _setenv(const char *name, const char *value, int overwrite);
 void print_current_environment(void);
+void _exit_shell(char *argument, char *command_string, char *copied_user_input);
 
 #endif

@@ -61,13 +61,24 @@ int main(int argc, char *argv[])
                 break;
             }
 
+
+
 	copied_user_input = strdup(command_string);
 	copied_user_input[strcspn(copied_user_input, "\n")] = '\0';
-       if (strcmp(copied_user_input, "exit") == 0) {
+
+        if (strncmp(copied_user_input, "exit", 4) == 0 && strlen(copied_user_input) > 4) {
+            char *exit_param = copied_user_input + 4; /* Skip the "exit" part */
+            _exit_shell(exit_param, command_string, copied_user_input);
+			}
+       else if (strcmp(copied_user_input, "exit") == 0) {
 	free(command_string);
 	free(copied_user_input);
 	break;
 }
+
+
+
+
 	free(copied_user_input);
 
             if (readline > 1)

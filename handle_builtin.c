@@ -30,6 +30,22 @@ void exit_shell(char **arguments)
     exit(status);
 }
 
+
+void _exit_shell(char *argument, char *command_string, char *copied_user_input)
+{
+    int status = 0;
+
+    if (argument != NULL)
+    {
+        status = _atoi(argument);
+    }
+	
+	free(command_string);
+	free(copied_user_input);
+
+    exit(status);
+}
+
 /**
  * change_directory - Change the current working directory
  * @arguments: Arguments for the cd command
