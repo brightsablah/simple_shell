@@ -8,7 +8,7 @@ void print_environment(void)
     extern char **environ;
     int len = 0, count = 0;
 
-    while ((environ[len] != NULL) && (count < 10))
+    while ((environ[len] != NULL))
     {
         write(STDOUT_FILENO, environ[len], _strlen(environ[len]));
         write(STDOUT_FILENO, "\n", 1);
@@ -66,7 +66,7 @@ int handle_builtin(char *command, char **arguments, char *command_string)
 {
     if (_strcmp(command, "env") == 0)
     {
-        print_environment();
+       /* print_environment(); */
     }
     else if (_strcmp(command, "exit") == 0)
     {
