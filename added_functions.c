@@ -1,6 +1,5 @@
 #include "shell.h"
 
-
 /**
  * _setenv - Change or add an environment variable.
  * @name: Name of the environment variable.
