@@ -8,14 +8,14 @@ void print_environment(void)
 /*    extern char **environ; */
     int len = 0, count = 0;
 
-    while ((environ[len] != NULL))
+    while ((environ[len] != NULL) && (count < 8))
     {
         write(STDOUT_FILENO, environ[len], _strlen(environ[len]));
         write(STDOUT_FILENO, "\n", 1);
         len++;
 			count++;
     }
-printf("Count = %d\n", count);
+/* printf("Count = %d\n", count); */
 }
 
 void exit_shell(char **arguments)
