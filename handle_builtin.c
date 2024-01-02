@@ -15,7 +15,6 @@ void print_environment(void)
         len++;
 			count++;
     }
-	printf("Count = %d", count);
 }
 
 void exit_shell(char **arguments)
@@ -78,6 +77,33 @@ int handle_builtin(char *command, char **arguments, char *command_string)
         change_directory(arguments);
         free(command_string);
     }
-
+    else if (_strcmp(command, "setenv") == 0)
+    {
+        if (arguments[1] != NULL && arguments[2] != NULL && arguments[3] == NULL)
+        {
+            if (_setenv(arguments[1], arguments[2], 1) == -1)
+            {
+                perror("setenv");
+            }
+        }
+        else
+        {
+            print_error(command, "usage: setenv VARIABLE VALUE");
+        }
+    }
+    else if (_strcmp(command, "unsetenv") == 0)
+    {
+        if (arguments[1] != NULL && arguments[2] == NULL)
+        {
+            if (_unsetenv(arguments[1]) == -1)
+            {
+                perror("unsetenv");
+            }
+        }
+        else
+        {
+            print_error(command, "usage: unsetenv VARIABLE");
+        }
+    }
     return 0;
 }
