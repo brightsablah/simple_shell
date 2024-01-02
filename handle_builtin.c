@@ -15,6 +15,7 @@ void print_environment(void)
         len++;
 			count++;
     }
+	printf("Count = %d", count);
 }
 
 void exit_shell(char **arguments)
