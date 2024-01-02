@@ -65,7 +65,7 @@ int handle_builtin(char *command, char **arguments, char *command_string)
 {
     if (_strcmp(command, "env") == 0)
     {
-       /* print_environment(); */
+       print_environment();
     }
     else if (_strcmp(command, "exit") == 0)
     {
