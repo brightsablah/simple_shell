@@ -40,7 +40,7 @@ void _exit_shell(char *argument, char *command_string, char *copied_user_input)
         status = _atoi(argument);
 
         if (status <= 0) {
-            fprintf(stderr, "./hsh: 1: exit: Illegal number: %s\n", argument);
+            fprintf(stderr, "./hsh: 1: exit: Illegal number:%s\n", argument);
 
 				free(copied_user_input);
 				free(command_string);
