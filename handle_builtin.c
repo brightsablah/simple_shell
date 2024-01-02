@@ -70,8 +70,11 @@ int handle_builtin(char *command, char **arguments, char *command_string)
     }
     else if (_strcmp(command, "exit") == 0)
     {
+		/*	free(command_string);
+			printf("command string = %s", command_string);
         exit_shell(arguments);
-        free(command_string);
+        free(command_string); */
+
     }
     else if (_strcmp(command, "cd") == 0)
     {

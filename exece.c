@@ -62,6 +62,9 @@ void execute_command(char *command_string)
         return;
     }
 
+printf("ABOUT TO SEARCH FOR COMMAND IN THE ABSOLUTE PATH");
+
+
     if (command[0] == '/' || command[0] == '.')
     {
             if (execute_absolute_path(command, arguments) != 0)

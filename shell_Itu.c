@@ -29,6 +29,7 @@ int main(int argc, char *argv[])
     size_t com_len = 0;
     ssize_t readline;
     FILE *script;
+	char *copied_user_input = NULL;
 
     if (argc > 1)
     {
@@ -59,6 +60,15 @@ int main(int argc, char *argv[])
                 exit_shell(NULL);
                 break;
             }
+
+	copied_user_input = strdup(command_string);
+	copied_user_input[strcspn(copied_user_input, "\n")] = '\0';
+       if (strcmp(copied_user_input, "exit") == 0) {
+	free(command_string);
+	free(copied_user_input);
+	break;
+}
+	free(copied_user_input);
 
             if (readline > 1)
             {
