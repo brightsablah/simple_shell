@@ -5,7 +5,7 @@
  */
 void print_environment(void)
 {
-    extern char **environ;
+/*    extern char **environ; */
     int len = 0, count = 0;
 
     while ((environ[len] != NULL))
@@ -15,6 +15,7 @@ void print_environment(void)
         len++;
 			count++;
     }
+printf("Count = %d\n", count);
 }
 
 void exit_shell(char **arguments)
