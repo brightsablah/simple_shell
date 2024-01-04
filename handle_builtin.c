@@ -90,6 +90,8 @@ void change_directory(char **arguments)
 
 int handle_builtin(char *command, char **arguments, char *command_string)
 {
+	(void)command_string;
+
     if (_strcmp(command, "env") == 0)
     {
        print_current_environment();
@@ -105,7 +107,7 @@ int handle_builtin(char *command, char **arguments, char *command_string)
     else if (_strcmp(command, "cd") == 0)
     {
         change_directory(arguments);
-        free(command_string);
+/*        free(command_string); */
     }
     else if (_strcmp(command, "setenv") == 0)
     {
